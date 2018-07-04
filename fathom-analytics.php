@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics
 Description: A simple plugin to add the Fathom tracking snippet to your WordPress site.
 Author: Fathom Team
-Version: 1.0
+Version: 1.0.0
 
 Fathom Analytics for WordPress
 Copyright (C) 2018 Danny van Kooten
