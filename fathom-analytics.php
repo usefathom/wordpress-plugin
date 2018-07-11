@@ -25,7 +25,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const FATHOM_OPTION_NAME = 'fathom_url';
 
 function fathom_print_js_snippet() {
-   $fathom_url = get_option( FATHOM_OPTION_NAME );
+   $fathom_url = get_option( FATHOM_OPTION_NAME, '' );
+
+    // don't print snippet if fathom URL is empty
+   if( empty( $fathom_url ) ) {
+      return;
+   }
 
    // trim trailing slash
    $fathom_url = rtrim( $fathom_url, '/' );
