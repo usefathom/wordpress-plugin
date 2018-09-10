@@ -13,7 +13,7 @@ Adds the Fathom tracking snippet to your WordPress site.
 
 == Description ==
 
-An easy way to add the [Fathom Analytics](https://usefathom.com/) tracking snippet to your WordPress site.
+A simple plugin to add the [Fathom Analytics](https://usefathom.com/) tracking snippet to your WordPress site.
 
 ### What is Fathom?
 

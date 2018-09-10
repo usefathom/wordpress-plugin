@@ -1,6 +1,6 @@
 # Fathom WordPress Plugin
 
-A simple plugin to add the Fathom tracking snippet to your WordPress site.
+A simple plugin to add the [Fathom Analytics](https://usefathom.com/) tracking snippet to your WordPress site.
 
 ### Usage
 
