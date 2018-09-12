@@ -27,7 +27,7 @@ Fathom Analytics is being developed on GitHub. If you want to collaborate, pleas
 == Installation ==
 
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **Fathom Analytics** and click "*Install now*"
-1. Alternatively, download the plugin and upload the contents of `html-forms.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
+1. Alternatively, download the plugin and upload the contents of `fathom-analytics.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
 1. Activate the plugin
 
 
