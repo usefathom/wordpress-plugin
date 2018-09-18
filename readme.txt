@@ -1,5 +1,5 @@
 === Fathom Analytics ===
-Contributors: Ibericode, DvanKooten
+Contributors: Ibericode, DvanKooten, pauljarvis
 Donate link: https://usefathom.com/
 Tags: fathom analytics, analytics, website stats
 Requires at least: 4.5
