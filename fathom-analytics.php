@@ -22,14 +22,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_OPTION_NAME = 'fathom_url';
+const FATHOM_URL_OPTION_NAME = 'fathom_url';
+const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 
-function fathom_print_js_snippet() {
-   $fathom_url = get_option( FATHOM_OPTION_NAME, '' );
-
+function fathom_get_url() {
+    $fathom_url = get_option( FATHOM_URL_OPTION_NAME, '' );
+   	
     // don't print snippet if fathom URL is empty
    if( empty( $fathom_url ) ) {
-      return;
+      return '';
    }
 
    // trim trailing slash
@@ -38,7 +39,24 @@ function fathom_print_js_snippet() {
    // make relative
    $fathom_url = str_replace( array( 'https:', 'http:' ), '', $fathom_url );
 
-   ?>
+   return $fathom_url;
+}
+
+function fathom_get_site_id() {
+    return get_option( FATHOM_SITE_ID_OPTION_NAME, '' );
+}
+
+function fathom_print_js_snippet() {
+   $url = fathom_get_url();
+   	
+    // don't print snippet if fathom URL is empty
+   if( empty( $url ) ) {
+      return;
+   }
+
+   $site_id = fathom_get_site_id();
+
+    ?>
    <!-- Fathom - simple website analytics - https://github.com/usefathom/fathom -->
    <script>
    (function(f, a, t, h, o, m){
@@ -50,7 +68,8 @@ function fathom_print_js_snippet() {
       m=f.getElementsByTagName('script')[0];
       o.async=1; o.src=t;
       m.parentNode.insertBefore(o,m)
-   })(document, window, '//<?php echo esc_attr( $fathom_url ); ?>/tracker.js', 'fathom');
+   })(document, window, '//<?php echo esc_attr( $url ); ?>/tracker.js', 'fathom');
+   fathom('set', 'siteId', '<?php echo esc_attr( $site_id ); ?>');	
    fathom('trackPageview');
    </script>
    <!-- / Fathom -->
@@ -61,18 +80,29 @@ add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
 
 function fathom_register_settings() {
    // register option
-   register_setting( 'general', FATHOM_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'general', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'general', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
 
-   // register settings field
+   // register settings fields
    $title = __( 'Fathom URL', 'fathom-analytics' );
-   add_settings_field( FATHOM_OPTION_NAME, $title, 'fathom_print_setting_field', 'general' );
+   add_settings_field( FATHOM_URL_OPTION_NAME, $title, 'fathom_print_url_setting_field', 'general' );
+
+   $title = __( 'Fathom Site ID', 'fathom-analytics' );
+   add_settings_field( FATHOM_SITE_ID_OPTION_NAME, $title, 'fathom_print_site_id_setting_field', 'general' );
 }
 
-function fathom_print_setting_field( $args = array() ) {
-   $value = get_option( FATHOM_OPTION_NAME );
+function fathom_print_url_setting_field( $args = array() ) {
+   $value = get_option( FATHOM_URL_OPTION_NAME );
    $placeholder = 'http://my-stats.usefathom.com/';
-   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_OPTION_NAME, FATHOM_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
+   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_URL_OPTION_NAME, FATHOM_URL_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
    echo '<p class="description">' . __( 'Enter the full URL to your Fathom instance here.', 'fathom-analytics' ) . '</p>';
+}
+
+function fathom_print_site_id_setting_field( $args = array() ) {
+   $value = get_option( FATHOM_SITE_ID_OPTION_NAME );
+   $placeholder = 'xx-xx';
+   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
+   echo '<p class="description">' . __( 'Enter your Fathom site ID here', 'fathom-analytics' ) . '</p>';
 }
 
 if( is_admin() && ! wp_doing_ajax() ) {
