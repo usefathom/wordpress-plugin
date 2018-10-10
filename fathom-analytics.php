@@ -76,34 +76,48 @@ function fathom_print_js_snippet() {
    <?php
 }
 
-add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
-
 function fathom_register_settings() {
+   $fathom_logo_html = sprintf( '<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=16 height=16 style="vertical-align: bottom;"></a>', plugins_url( 'fathom.svg', __FILE__ ) );
+   add_options_page( 'Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page' );
+   add_settings_section(  'default', "Fathom Analytics {$fathom_logo_html}", '__return_true', 'fathom-analytics' );
+
    // register option
-   register_setting( 'general', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
-   register_setting( 'general', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
 
    // register settings fields
-   $title = __( 'Fathom URL', 'fathom-analytics' );
-   add_settings_field( FATHOM_URL_OPTION_NAME, $title, 'fathom_print_url_setting_field', 'general' );
+   $title = __( 'Dashboard URL', 'fathom-analytics' );
+   add_settings_field( FATHOM_URL_OPTION_NAME, $title, 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
 
-   $title = __( 'Fathom Site ID', 'fathom-analytics' );
-   add_settings_field( FATHOM_SITE_ID_OPTION_NAME, $title, 'fathom_print_site_id_setting_field', 'general' );
+   $title = __( 'Site ID', 'fathom-analytics' );
+   add_settings_field( FATHOM_SITE_ID_OPTION_NAME, $title, 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
+}
+
+function fathom_print_settings_page() {
+   echo '<div class="wrap">';
+   echo sprintf( '<form method="POST" action="%s">', esc_attr( admin_url( 'options.php' ) ) );
+   settings_fields( 'fathom' );
+   do_settings_sections( 'fathom-analytics' );
+   submit_button();
+   echo '</form>';
+   echo '</div>';
 }
 
 function fathom_print_url_setting_field( $args = array() ) {
    $value = get_option( FATHOM_URL_OPTION_NAME );
-   $placeholder = 'http://my-stats.usefathom.com/';
+   $placeholder = 'https://my-stats.usefathom.com/';
    echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_URL_OPTION_NAME, FATHOM_URL_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
    echo '<p class="description">' . __( 'Enter the full URL to your Fathom instance here.', 'fathom-analytics' ) . '</p>';
 }
 
 function fathom_print_site_id_setting_field( $args = array() ) {
    $value = get_option( FATHOM_SITE_ID_OPTION_NAME );
-   $placeholder = 'xx-xx';
-   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
-   echo '<p class="description">' . __( 'Enter your Fathom site ID here', 'fathom-analytics' ) . '</p>';
+   $placeholder = 'ABCDEF';
+   echo sprintf( '<input type="text" name="%s" id="%s" class="small-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
+   echo '<p class="description">' . __( 'Find your site ID by by clicking the gearwheel in your Fathom dashboard.', 'fathom-analytics' ) . '</p>';
 }
+
+add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
 
 if( is_admin() && ! wp_doing_ajax() ) {
    add_action( 'admin_menu', 'fathom_register_settings' );
