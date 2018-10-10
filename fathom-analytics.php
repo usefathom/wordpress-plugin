@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics
 Description: A simple plugin to add the Fathom tracking snippet to your WordPress site.
 Author: Fathom Team
-Version: 1.0.0
+Version: 1.0.1
 
 Fathom Analytics for WordPress
 Copyright (C) 2018 Danny van Kooten
@@ -25,6 +25,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 
+/**
+* @since 1.0.0
+*/
 function fathom_get_url() {
     $fathom_url = get_option( FATHOM_URL_OPTION_NAME, '' );
    	
@@ -42,10 +45,16 @@ function fathom_get_url() {
    return $fathom_url;
 }
 
+/**
+* @since 1.0.1
+*/ 
 function fathom_get_site_id() {
     return get_option( FATHOM_SITE_ID_OPTION_NAME, '' );
 }
 
+/**
+* @since 1.0.0
+*/
 function fathom_print_js_snippet() {
    $url = fathom_get_url();
    	
@@ -57,7 +66,7 @@ function fathom_print_js_snippet() {
    $site_id = fathom_get_site_id();
 
     ?>
-   <!-- Fathom - simple website analytics - https://github.com/usefathom/fathom -->
+   <!-- Fathom - simple website analytics - https://usefathom.com/ -->
    <script>
    (function(f, a, t, h, o, m){
       a[h]=a[h]||function(){
@@ -76,23 +85,29 @@ function fathom_print_js_snippet() {
    <?php
 }
 
+/**
+* @since 1.0.0
+*/
 function fathom_register_settings() {
    $fathom_logo_html = sprintf( '<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=16 height=16 style="vertical-align: bottom;"></a>', plugins_url( 'fathom.svg', __FILE__ ) );
+   
+   // register page + section
    add_options_page( 'Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page' );
    add_settings_section(  'default', "Fathom Analytics {$fathom_logo_html}", '__return_true', 'fathom-analytics' );
 
-   // register option
+   // register options
    register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
    register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
 
    // register settings fields
-   $title = __( 'Dashboard URL', 'fathom-analytics' );
-   add_settings_field( FATHOM_URL_OPTION_NAME, $title, 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
+   add_settings_field( FATHOM_URL_OPTION_NAME, __( 'Dashboard URL', 'fathom-analytics' ), 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
 
-   $title = __( 'Site ID', 'fathom-analytics' );
-   add_settings_field( FATHOM_SITE_ID_OPTION_NAME, $title, 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
+   add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
 }
 
+/**
+* @since 1.0.1
+*/
 function fathom_print_settings_page() {
    echo '<div class="wrap">';
    echo sprintf( '<form method="POST" action="%s">', esc_attr( admin_url( 'options.php' ) ) );
@@ -103,6 +118,9 @@ function fathom_print_settings_page() {
    echo '</div>';
 }
 
+/**
+* @since 1.0.0
+*/
 function fathom_print_url_setting_field( $args = array() ) {
    $value = get_option( FATHOM_URL_OPTION_NAME );
    $placeholder = 'https://my-stats.usefathom.com/';
@@ -110,6 +128,9 @@ function fathom_print_url_setting_field( $args = array() ) {
    echo '<p class="description">' . __( 'Enter the full URL to your Fathom instance here.', 'fathom-analytics' ) . '</p>';
 }
 
+/**
+* @since 1.0.1
+*/
 function fathom_print_site_id_setting_field( $args = array() ) {
    $value = get_option( FATHOM_SITE_ID_OPTION_NAME );
    $placeholder = 'ABCDEF';
