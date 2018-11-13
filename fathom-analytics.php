@@ -134,7 +134,7 @@ function fathom_print_url_setting_field( $args = array() ) {
 function fathom_print_site_id_setting_field( $args = array() ) {
    $value = get_option( FATHOM_SITE_ID_OPTION_NAME );
    $placeholder = 'ABCDEF';
-   echo sprintf( '<input type="text" name="%s" id="%s" class="small-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
+   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
    echo '<p class="description">' . __( 'Find your site ID by by clicking the gearwheel in your Fathom dashboard.', 'fathom-analytics' ) . '</p>';
 }
 
