@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
+const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 
 /**
 * @since 1.0.0
@@ -53,14 +54,26 @@ function fathom_get_site_id() {
 }
 
 /**
+ * @since 1.0.1
+ */
+function fathom_get_admin_tracking() {
+    return get_option( FATHOM_ADMIN_TRACKING_OPTION_NAME, '');
+}
+
+/**
 * @since 1.0.0
 */
 function fathom_print_js_snippet() {
    $url = fathom_get_url();
+   $exclude_admin = fathom_get_admin_tracking();
    	
     // don't print snippet if fathom URL is empty
    if( empty( $url ) ) {
       return;
+   }
+
+   if( empty( $exclude_admin ) && current_user_can('manage_options') ) {
+       return;
    }
 
    $site_id = fathom_get_site_id();
@@ -98,11 +111,14 @@ function fathom_register_settings() {
    // register options
    register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
    register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_ADMIN_TRACKING_OPTION_NAME, array( 'type' => 'string') );
 
    // register settings fields
    add_settings_field( FATHOM_URL_OPTION_NAME, __( 'Dashboard URL', 'fathom-analytics' ), 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
 
    add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
+
+   add_settings_field( FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
 }
 
 /**
@@ -136,6 +152,15 @@ function fathom_print_site_id_setting_field( $args = array() ) {
    $placeholder = 'ABCDEF';
    echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
    echo '<p class="description">' . __( 'Find your site ID by by clicking the gearwheel in your Fathom dashboard.', 'fathom-analytics' ) . '</p>';
+}
+
+/**
+ * @since 1.0.1
+ */
+function fathom_print_admin_tracking_setting_field( $args = array() ) {
+    $value = get_option( FATHOM_ADMIN_TRACKING_OPTION_NAME );
+    echo sprintf( '<input type="checkbox" name="%s" id="%s" value="1" %s />', FATHOM_ADMIN_TRACKING_OPTION_NAME, FATHOM_ADMIN_TRACKING_OPTION_NAME, checked( 1, $value, false ) );
+    echo '<p class="description">' . __( 'Check if you want to track visits by administrators', 'fathom-analytics' ) . '</p>';
 }
 
 add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
