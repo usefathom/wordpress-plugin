@@ -9,9 +9,9 @@ Stop scrolling through pages of reports and collecting gobs of personal data abo
 
 Major features of Fathom Analytics include:
 
-* One screen, all the real-time data you need.
-* Cookie notices not required (we don’t use cookies or collect personal data).
-* Displays: top content, top referrers, top goals and more.
+* One screen, all the real-time data you need
+* Cookie notices not required (we don’t use cookies or collect personal data)
+* Displays: top content, top referrers, top goals and more
 
 To use use this plugin, you need have a paid Fathom Analytics account and your dashboard sharing set to [public or private with password](https://usefathom.com/support/sharing).
 
