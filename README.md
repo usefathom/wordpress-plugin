@@ -36,13 +36,14 @@ Leave this set to “cdn.usefathom.com” unless you are using Fathom Lite (the 
 
 Log into Wordpress
 
-1. Go to `Plugins`, `Add New`
-1. Upload this plugin, `fa4wp.zip`
-1. Click `Install Now`, then `Activate`
-1. Go to `Settings`, then `Fathom Analytics`
-1. Type in your `SiteID`. If you don’t know your `SiteId`, log into [Fathom Analytics](https://app.usefathom.com), go to `Settings`, `Sites`, then your `SiteID` will be beside the name of your site
-1. If your dashboard is public, leave `Fathom share password` blank. If your dashboard is privately shared, then type in the share password
-1. Leave `Fathom URL` set to cdn.usefathom.com
+1. [Download the Fathom Analytics plugin](https://github.com/usefathom/wordpress-plugin/releases/download/2.0/fathom-analytics.zip)
+2. Go to `Plugins`, `Add New`
+3. Upload this plugin, `fathom-analytics.zip`
+4. Click `Install Now`, then `Activate`
+5. Go to `Settings`, then `Fathom Analytics`
+6. Type in your `SiteID`. If you don’t know your `SiteId`, log into [Fathom Analytics](https://app.usefathom.com), go to `Settings`, `Sites`, then your `SiteID` will be beside the name of your site
+7. If your dashboard is public, leave `Fathom share password` blank. If your dashboard is privately shared, then type in the share password
+8. Leave `Fathom URL` set to cdn.usefathom.com
 
 Taking the above steps automatically places the Fathom tracking code into the footer of every page of your WordPress site.
 
