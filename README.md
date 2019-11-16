@@ -43,7 +43,7 @@ Log into Wordpress
 
 Taking the above steps automatically places the Fathom tracking code into the footer of every page of your WordPress site.
 
-If you now want to see your Fathom dashboard from within Wordpress, make sure “Display Analytics Menu Item” is checked off. Hit Save Changes, and you’ll see Analytics on the menu in WordPress on the lefthand side.
+If you now want to see your Fathom dashboard from within Wordpress, make sure “Display Analytics Menu Item” is checked off. Hit Save Changes, and you’ll see Fathom on the menu in WordPress on the lefthand side.
 
 Enjoy Fathom Analytics for WordPress!
 
