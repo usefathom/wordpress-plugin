@@ -2,8 +2,8 @@
 
 Fathom Analytics for WordPress is a simple way to view your dashboard inside WordPress, and add your Fathom Analytics tracking code to your WordPress site without editing any code. This plugin is for paying customers of Fathom Analytics.
 
-![Screenshot of the Fathom Analytics for Wordpress Embedded Dashboard](https://github.com/usefathom/wordpress-plugin/raw/master/assets/src/img/screenshot-2.png)
-![Screenshot of the Fathom Analytics for Wordpress Settings](https://github.com/usefathom/wordpress-plugin/raw/master/assets/src/img/screenshot-1.png)
+![Screenshot of the Fathom Analytics for Wordpress Embedded Dashboard](https://raw.githubusercontent.com/usefathom/wordpress-plugin/master/screenshot-2.png)
+![Screenshot of the Fathom Analytics for Wordpress Settings](https://raw.githubusercontent.com/usefathom/wordpress-plugin/master/screenshot-1.png)
 
 ### What is Fathom Analytics?
 [Fathom Analytics](https://usefathom.com) is a simple, privacy-focused website analytics tool for bloggers and businesses.
