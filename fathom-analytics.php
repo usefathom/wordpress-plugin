@@ -2,11 +2,12 @@
 /*
 Plugin Name: Fathom Analytics
 Description: A simple plugin to add the Fathom tracking snippet to your WordPress site.
-Author: Fathom Team
-Version: 1.0.1
+Author: Conva Ventures Inc
+Note: Huge thanks to Danny Van Kooten for his hard work on Version 1 of this plugin
+Version: 2.0.0
 
 Fathom Analytics for WordPress
-Copyright (C) 2018 Danny van Kooten
+Copyright (C) 2019 Conva Ventures Inc
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,16 +26,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
+const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
+const FATHOM_SHOW_ANALYTICS_MENU_ITEM = 'fathom_show_menu';
 
 /**
 * @since 1.0.0
 */
 function fathom_get_url() {
     $fathom_url = get_option( FATHOM_URL_OPTION_NAME, '' );
-   	
+
     // don't print snippet if fathom URL is empty
    if( empty( $fathom_url ) ) {
-      return '';
+      return 'cdn.usefathom.com';
    }
 
    // trim trailing slash
@@ -48,7 +51,7 @@ function fathom_get_url() {
 
 /**
 * @since 1.0.1
-*/ 
+*/
 function fathom_get_site_id() {
     return get_option( FATHOM_SITE_ID_OPTION_NAME, '' );
 }
@@ -78,6 +81,10 @@ function fathom_print_js_snippet() {
 
    $site_id = fathom_get_site_id();
 
+   if (empty($site_id)) {
+      return;
+   }
+
     ?>
    <!-- Fathom - simple website analytics - https://usefathom.com/ -->
    <script>
@@ -90,8 +97,8 @@ function fathom_print_js_snippet() {
       m=f.getElementsByTagName('script')[0];
       o.async=1; o.src=t;
       m.parentNode.insertBefore(o,m)
-   })(document, window, '//<?php echo esc_attr( $url ); ?>/tracker.js', 'fathom');
-   fathom('set', 'siteId', '<?php echo esc_attr( $site_id ); ?>');	
+   })(document, window, 'https://<?php echo esc_attr( $url ); ?>/tracker.js', 'fathom');
+   fathom('set', 'siteId', '<?php echo esc_attr( $site_id ); ?>');
    fathom('trackPageview');
    </script>
    <!-- / Fathom -->
@@ -99,26 +106,46 @@ function fathom_print_js_snippet() {
 }
 
 /**
+ * @since 2.0.0
+ */
+function fathom_stats_page() {
+   add_menu_page( 'Fathom', 'Analytics', 'edit_pages', 'analytics', 'fathom_print_stats_page', 'dashicons-chart-bar', 6  );
+}
+
+/**
+* @since 2.0.0
+*/
+function fathom_print_stats_page() {
+   wp_enqueue_script('fathom-iframresize', plugins_url('iframeResizer.min.js', __FILE__));
+   wp_enqueue_script('fathom-stats-iframe', plugins_url('fathom-stats-iframe.js', __FILE__));
+   echo '<div class="wrap">';
+   echo '<iframe id="fathom-stats-iframe" src="https://app.usefathom.com/share/' . get_option( FATHOM_SITE_ID_OPTION_NAME ) . '/wordpress?password=' . hash('sha256', get_option( FATHOM_PRIVATE_SHARE_PASSWORD )) . '" style="width: 1px;min-width: 100%; height:1000px; max-width:1100px" frameborder="0" onload=fathomResizeIframe();></iframe>';
+   echo '</div>';
+}
+
+/**
 * @since 1.0.0
 */
 function fathom_register_settings() {
-   $fathom_logo_html = sprintf( '<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=16 height=16 style="vertical-align: bottom;"></a>', plugins_url( 'fathom.svg', __FILE__ ) );
-   
+   $fathom_logo_html = sprintf( '<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=20 height=20 style="vertical-align: bottom;"></a>', plugins_url( 'fathom.png', __FILE__ ) );
+
    // register page + section
    add_options_page( 'Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page' );
    add_settings_section(  'default', "Fathom Analytics {$fathom_logo_html}", '__return_true', 'fathom-analytics' );
 
    // register options
-   register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
    register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
    register_setting( 'fathom', FATHOM_ADMIN_TRACKING_OPTION_NAME, array( 'type' => 'string') );
+   register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean' ) );
 
    // register settings fields
-   add_settings_field( FATHOM_URL_OPTION_NAME, __( 'Dashboard URL', 'fathom-analytics' ), 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
-
    add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
-
    add_settings_field( FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
+   add_settings_field( FATHOM_SHOW_ANALYTICS_MENU_ITEM,  __( 'Display Analytics Menu Item', 'fathom-analytics' ), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default' );
+   add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Fathom Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default' );
+   add_settings_field( FATHOM_URL_OPTION_NAME, __( 'Fathom URL', 'fathom-analytics' ), 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
 }
 
 /**
@@ -135,13 +162,31 @@ function fathom_print_settings_page() {
 }
 
 /**
+ * @since 2.0.0
+ */
+function fathom_print_display_analytics_menu_setting_field( $args = array() ) {
+   $value = get_option( FATHOM_SHOW_ANALYTICS_MENU_ITEM );
+   echo sprintf( '<input type="checkbox" name="%s" id="%s" class="regular-text" ' . (esc_attr($value) ? 'checked' : '') .' />', FATHOM_SHOW_ANALYTICS_MENU_ITEM, FATHOM_SHOW_ANALYTICS_MENU_ITEM);
+   echo '<p class="description">' . __( 'Display the Fathom Tab', 'fathom-analytics' ) . '</p>';
+}
+
+/**
+* @since 2.0.0
+*/
+function fathom_print_share_password_setting_field( $args = array() ) {
+   $value = get_option( FATHOM_PRIVATE_SHARE_PASSWORD );
+   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_PRIVATE_SHARE_PASSWORD, FATHOM_PRIVATE_SHARE_PASSWORD, esc_attr( $value ), esc_attr( $placeholder ) );
+   echo '<p class="description">' . __( 'If you don\'t set a password here, the user will be prompted to enter one on the Analytics menu option', 'fathom-analytics' ) . '</p>';
+}
+
+/**
 * @since 1.0.0
 */
 function fathom_print_url_setting_field( $args = array() ) {
    $value = get_option( FATHOM_URL_OPTION_NAME );
    $placeholder = 'https://my-stats.usefathom.com/';
-   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_URL_OPTION_NAME, FATHOM_URL_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
-   echo '<p class="description">' . __( 'Enter the full URL to your Fathom instance here.', 'fathom-analytics' ) . '</p>';
+   echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_URL_OPTION_NAME, FATHOM_URL_OPTION_NAME, esc_attr( $value ) ?: 'cdn.usefathom.com', esc_attr( $placeholder ) );
+   echo '<p class="description">' . __( 'Only edit this value if you are using Fathom Lite', 'fathom-analytics' ) . '</p>';
 }
 
 /**
@@ -151,7 +196,7 @@ function fathom_print_site_id_setting_field( $args = array() ) {
    $value = get_option( FATHOM_SITE_ID_OPTION_NAME );
    $placeholder = 'ABCDEF';
    echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
-   echo '<p class="description">' . __( 'Find your site ID by by clicking the gearwheel in your Fathom dashboard.', 'fathom-analytics' ) . '</p>';
+   echo '<p class="description">' . __( 'This is the <a href="https://usefathom.com/support/wordpress" target="_blank">unique Tracking ID</a> for your site', 'fathom-analytics' ) . '</p>';
 }
 
 /**
@@ -167,4 +212,8 @@ add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
 
 if( is_admin() && ! wp_doing_ajax() ) {
    add_action( 'admin_menu', 'fathom_register_settings' );
+}
+
+if (get_option( FATHOM_SHOW_ANALYTICS_MENU_ITEM )) {
+   add_action( 'admin_menu', 'fathom_stats_page' );
 }
