@@ -25,6 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
+const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
 const FATHOM_SHOW_ANALYTICS_MENU_ITEM = 'fathom_show_menu';
 
@@ -56,10 +57,27 @@ function fathom_get_site_id() {
 }
 
 /**
+ * @since 1.0.1
+ */
+function fathom_get_admin_tracking() {
+    return get_option( FATHOM_ADMIN_TRACKING_OPTION_NAME, '');
+}
+
+/**
 * @since 1.0.0
 */
 function fathom_print_js_snippet() {
    $url = fathom_get_url();
+   $exclude_admin = fathom_get_admin_tracking();
+   	
+    // don't print snippet if fathom URL is empty
+   if( empty( $url ) ) {
+      return;
+   }
+
+   if( empty( $exclude_admin ) && current_user_can('manage_options') ) {
+       return;
+   }
 
    $site_id = fathom_get_site_id();
 
@@ -117,18 +135,17 @@ function fathom_register_settings() {
 
    // register options
    register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
+   register_setting( 'fathom', FATHOM_ADMIN_TRACKING_OPTION_NAME, array( 'type' => 'string') );
    register_setting( 'fathom', FATHOM_URL_OPTION_NAME, array( 'type' => 'string' ) );
-
    register_setting( 'fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ) );
    register_setting( 'fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean' ) );
 
    // register settings fields
    add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default' );
+   add_settings_field( FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
    add_settings_field( FATHOM_SHOW_ANALYTICS_MENU_ITEM,  __( 'Display Analytics Menu Item', 'fathom-analytics' ), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default' );
    add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Fathom Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default' );
-
    add_settings_field( FATHOM_URL_OPTION_NAME, __( 'Fathom URL', 'fathom-analytics' ), 'fathom_print_url_setting_field', 'fathom-analytics', 'default' );
-
 }
 
 /**
@@ -180,6 +197,15 @@ function fathom_print_site_id_setting_field( $args = array() ) {
    $placeholder = 'ABCDEF';
    echo sprintf( '<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr( $value ), esc_attr( $placeholder ) );
    echo '<p class="description">' . __( 'This is the <a href="https://usefathom.com/support/wordpress" target="_blank">unique Tracking ID</a> for your site', 'fathom-analytics' ) . '</p>';
+}
+
+/**
+ * @since 1.0.1
+ */
+function fathom_print_admin_tracking_setting_field( $args = array() ) {
+    $value = get_option( FATHOM_ADMIN_TRACKING_OPTION_NAME );
+    echo sprintf( '<input type="checkbox" name="%s" id="%s" value="1" %s />', FATHOM_ADMIN_TRACKING_OPTION_NAME, FATHOM_ADMIN_TRACKING_OPTION_NAME, checked( 1, $value, false ) );
+    echo '<p class="description">' . __( 'Check if you want to track visits by administrators', 'fathom-analytics' ) . '</p>';
 }
 
 add_action( 'wp_head', 'fathom_print_js_snippet', 50 );
