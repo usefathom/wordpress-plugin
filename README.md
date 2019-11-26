@@ -2,7 +2,7 @@
 [![WordPress.org rating](https://img.shields.io/wordpress/plugin/stars/fathom-analytics)](https://wordpress.org/support/plugin/fathom-analytics/reviews)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
  
-(Fathom Analytics)[https://usefathom.com] for WordPress is a simple way to view your dashboard inside WordPress, and add your Fathom Analytics tracking code to your WordPress site without editing any code. This plugin is for paying customers of Fathom Analytics.
+[Fathom Analytics](https://usefathom.com) for WordPress is a simple way to view your dashboard inside WordPress, and add your Fathom Analytics tracking code to your WordPress site without editing any code. This plugin is for paying customers of Fathom Analytics.
 
 ![Screenshot of the Fathom Analytics for Wordpress Embedded Dashboard](https://raw.githubusercontent.com/usefathom/wordpress-plugin/master/screenshot-2.png)
 ![Screenshot of the Fathom Analytics for Wordpress Settings](https://raw.githubusercontent.com/usefathom/wordpress-plugin/master/screenshot-1.png)
