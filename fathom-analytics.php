@@ -23,6 +23,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+/**
+ * Define a few helpful plugin constants if they don't exist.
+ */
+if ( ! defined( 'FATHOM_PLUGIN_FILE' ) ) {
+	define( 'FATHOM_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! defined( 'FATHOM_PLUGIN_BASENAME' ) && defined( 'FATHOM_PLUGIN_FILE' ) ) {
+    define ( 'FATHOM_PLUGIN_BASENAME', plugin_basename( FATHOM_PLUGIN_FILE ) );
+}
+
+if ( ! defined( 'FATHOM_SETTINGS_URL' ) ) {
+    define( 'FATHOM_SETTINGS_URL', admin_url( 'options-general.php?page=fathom-analytics' ) );
+}
+
+
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
@@ -217,3 +233,30 @@ if( is_admin() && ! wp_doing_ajax() ) {
 if (get_option( FATHOM_SHOW_ANALYTICS_MENU_ITEM )) {
    add_action( 'admin_menu', 'fathom_stats_page' );
 }
+
+/**
+ * Adds link to Settings page in plugin action links.
+ *
+ * @since 2.0.1
+ *
+ * @param array  $plugin_links Already defined action links.
+ * @param string $plugin_file Plugin file path and name being processed.
+ * @return array $plugin_links The new array of action links.
+ */
+function add_plugin_action_links( $plugin_links, $plugin_file ) {
+
+	// Abort if not dealing with Fathom plugin
+	if ( FATHOM_PLUGIN_BASENAME !== $plugin_file ) {
+		return $plugin_links;
+	}
+
+	$settings_link  = '<a href="' . FATHOM_SETTINGS_URL . '" aria-label="' . esc_attr( __( 'Navigate to the Fathom Analytics settings.', 'fathom' ) ) . '">';
+	$settings_link .= __( 'Settings', 'fathom' );
+	$settings_link .= '</a>';
+
+    // Add Settings link beside 'Deactivate'
+	array_unshift( $plugin_links, $settings_link );
+
+	return $plugin_links;
+}
+add_filter( 'plugin_action_links', 'add_plugin_action_links', 10, 2 );
