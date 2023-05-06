@@ -109,6 +109,10 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 == Changelog ==
 
+### 3.0.6 - May 6, 2023
+
+Updating Fathom script to use data-site instead of site
+
 ### 3.0.5 - Dec 7, 2021
 
 Fixed security issue where an administrator could inject XSS code into the Analytics tab and gain access to super administrator accounts on a multi-site installation.
