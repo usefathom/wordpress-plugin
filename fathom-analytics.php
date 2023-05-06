@@ -107,9 +107,9 @@ function fathom_print_js_snippet()
     } ?>
    <!-- Fathom - beautiful, simple website analytics -->
   <?php if (empty(fathom_get_custom_domain())): ?>
-    <script src="https://cdn.usefathom.com/script.js" site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
+    <script src="https://cdn.usefathom.com/script.js" data-site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
    <?php else: ?>
-    <script src="https://<?php echo str_replace(['http://', 'https://', '/'], '', esc_attr(fathom_get_custom_domain())); ?>/script.js" site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
+    <script src="https://<?php echo str_replace(['http://', 'https://', '/'], '', esc_attr(fathom_get_custom_domain())); ?>/script.js" data-site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
    <?php endif; ?>
    <!-- / Fathom -->
    <?php
