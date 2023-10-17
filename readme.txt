@@ -109,9 +109,9 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 == Changelog ==
 
-### 3.0.6 - May 6, 2023
+### 3.0.6 - October 17, 2023
 
-Updating Fathom script to use data-site instead of site
+Using wp_enqueue_script for script.js
 
 ### 3.0.5 - Dec 7, 2021
 
