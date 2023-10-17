@@ -107,10 +107,7 @@ function fathom_enqueue_js_snippet()
         $script_url = 'https://' . str_replace(['http://', 'https://', '/'], '', $custom_url ) . '/script.js';
     }
 
-    wp_enqueue_script( 'fathom-snippet', esc_url( $script_url ), array(), FATHOM_PLUGIN_VERSION, array(
-        'strategy'  => 'defer',
-        'in_footer' => true
-    ) );
+    wp_enqueue_script( 'fathom-snippet', esc_url( $script_url ), array(), FATHOM_PLUGIN_VERSION, array( 'strategy' => 'defer' ) );
 }
 
 /**
