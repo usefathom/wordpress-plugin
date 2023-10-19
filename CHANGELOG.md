@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+### 3.0.6 - October 17, 2023
+
+Using `wp_enqueue_script` for script.js
+
 ### 3.0.5 - Dec 7, 2021
 
 Fixed security issue where an administrator could inject XSS code into the Analytics tab and gain access to super administrator accounts on a multi-site installation.
