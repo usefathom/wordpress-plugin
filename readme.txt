@@ -1,5 +1,5 @@
 === Fathom Analytics ===
-Contributors: convaventures
+Contributors: convaventures, aurooba
 Tags: fathom analytics, analytics, website stats
 Requires at least: 4.5
 Tested up to: 5.8.2
