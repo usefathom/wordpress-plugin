@@ -109,6 +109,10 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 == Changelog ==
 
+#### 3.0.8 - October 25, 2023
+
+Added settings link from plugin page, added Fathom to header not footer, etc. WIP
+
 ### 3.0.7 - December 9, 2022
 
 Tested on new Wordpress version and updated our graphics for the Wordpress plugin page (well done, Paul, they're beautiful).
