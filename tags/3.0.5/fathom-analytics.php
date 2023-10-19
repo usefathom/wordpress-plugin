@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics
 Description: A simple plugin to add the Fathom tracking snippet to your WordPress site.
 Author: Conva Ventures Inc
-Version: 3.0.6
+Version: 3.0.5
 
 Fathom Analytics for WordPress
 Copyright (C) 2020 Conva Ventures Inc
@@ -22,22 +22,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-/**
- * Define a few helpful plugin constants if they don't exist.
- */
-if ( ! defined( 'FATHOM_PLUGIN_FILE' ) ) {
-	define( 'FATHOM_PLUGIN_FILE', __FILE__ );
-}
-
-if ( ! defined( 'FATHOM_PLUGIN_BASENAME' ) && defined( 'FATHOM_PLUGIN_FILE' ) ) {
-    define ( 'FATHOM_PLUGIN_BASENAME', plugin_basename( FATHOM_PLUGIN_FILE ) );
-}
-
-if ( ! defined( 'FATHOM_SETTINGS_URL' ) ) {
-    define( 'FATHOM_SETTINGS_URL', admin_url( 'options-general.php?page=fathom-analytics' ) );
-}
-
-const FATHOM_PLUGIN_VERSION = '3.0.6';
 const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
@@ -100,49 +84,35 @@ function fathom_get_admin_tracking()
 }
 
 /**
-* @since 3.0.6
+* @since 1.0.0
 */
-function fathom_enqueue_js_snippet()
+function fathom_print_js_snippet()
 {
-    $url           = fathom_get_url();
+    $url = fathom_get_url();
     $exclude_admin = fathom_get_admin_tracking();
 
-    if (
-        empty( $url ) ||
-        empty( $exclude_admin ) && current_user_can( 'manage_options' )
-    ) {
+    // don't print snippet if fathom URL is empty
+    if (empty($url)) {
         return;
     }
 
-    $script_url = 'https://cdn.usefathom.com/script.js';
-
-    $custom_url = fathom_get_custom_domain();
-
-    if ( ! empty( $custom_url ) ) {
-        $script_url = 'https://' . str_replace(['http://', 'https://', '/'], '', $custom_url ) . '/script.js';
+    if (empty($exclude_admin) && current_user_can('manage_options')) {
+        return;
     }
 
-    wp_enqueue_script( 'fathom-snippet', esc_url( $script_url ), array(), FATHOM_PLUGIN_VERSION, array( 'strategy' => 'defer' ) );
-}
+    $site_id = fathom_get_site_id();
 
-/**
- * Add data attributes to the Fathom script tag.
- *
- * @param string $tag    The script tag.
- * @param string $handle The script handle.
- * @param string $src    The script source.
- *
- * @return string The modified script tag.
- *
- * @since 3.0.6
- */
-function fathom_add_data_attributes_to_js_script( $tag, $handle, $src )
-{
-    if ( 'fathom-snippet' === $handle ) {
-        $tag = str_replace( '></script>', ' data-site="' . fathom_get_site_id() . '" data-no-minify></script>', $tag );
-    }
-
-    return $tag;
+    if (empty($site_id)) {
+        return;
+    } ?>
+   <!-- Fathom - beautiful, simple website analytics -->
+  <?php if (empty(fathom_get_custom_domain())): ?>
+    <script src="https://cdn.usefathom.com/script.js" site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
+   <?php else: ?>
+    <script src="https://<?php echo str_replace(['http://', 'https://', '/'], '', esc_attr(fathom_get_custom_domain())); ?>/script.js" site="<?php echo esc_attr($site_id); ?>" data-no-minify=""></script>
+   <?php endif; ?>
+   <!-- / Fathom -->
+   <?php
 }
 
 /**
@@ -261,8 +231,7 @@ function fathom_print_admin_tracking_setting_field($args = array())
     echo '<p class="description">' . __('Check if you want to track visits by administrators', 'fathom-analytics') . '</p>';
 }
 
-add_action( 'wp_enqueue_scripts', 'fathom_enqueue_js_snippet' );
-add_filter( 'script_loader_tag', 'fathom_add_data_attributes_to_js_script', 10, 3 );
+add_action('wp_footer', 'fathom_print_js_snippet', 50);
 
 if (is_admin() && ! wp_doing_ajax()) {
     add_action('admin_menu', 'fathom_register_settings');
@@ -271,30 +240,3 @@ if (is_admin() && ! wp_doing_ajax()) {
 if (get_option(FATHOM_SHOW_ANALYTICS_MENU_ITEM)) {
     add_action('admin_menu', 'fathom_stats_page');
 }
-
-/**
- * Adds link to Settings page in plugin action links.
- *
- * @since 2.0.1
- *
- * @param array  $plugin_links Already defined action links.
- * @param string $plugin_file Plugin file path and name being processed.
- * @return array $plugin_links The new array of action links.
- */
-function add_plugin_action_links( $plugin_links, $plugin_file ) {
-
-	// Abort if not dealing with Fathom plugin
-	if ( FATHOM_PLUGIN_BASENAME !== $plugin_file ) {
-		return $plugin_links;
-	}
-
-	$settings_link  = '<a href="' . FATHOM_SETTINGS_URL . '" aria-label="' . esc_attr( __( 'Navigate to the Fathom Analytics settings.', 'fathom' ) ) . '">';
-	$settings_link .= __( 'Settings', 'fathom' );
-	$settings_link .= '</a>';
-
-    // Add Settings link beside 'Deactivate'
-	array_unshift( $plugin_links, $settings_link );
-
-	return $plugin_links;
-}
-add_filter( 'plugin_action_links', 'add_plugin_action_links', 10, 2 );

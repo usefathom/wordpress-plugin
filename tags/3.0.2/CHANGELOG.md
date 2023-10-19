@@ -1,22 +1,6 @@
 Changelog
 ==========
 
-### 3.0.6 - October 17, 2023
-
-Using `wp_enqueue_script` for script.js
-
-### 3.0.5 - Dec 7, 2021
-
-Fixed security issue where an administrator could inject XSS code into the Analytics tab and gain access to super administrator accounts on a multi-site installation.
-
-### 3.0.4 - July 12, 2021
-
-Branding and instructions update. Nothing to see here, folks. Hope you're loving the new release of Fathom :)
-
-### 3.0.3 - June 14, 2021
-
-Fixed a bug with custom domains on an older version of PHP
-
 #### 3.0.2 - January 27, 2021
 
 Set the default to track admins, as some users might miss this when installing Fathom for the first time. We also tested the plugin on Wordpress 5.6 and it's working great.

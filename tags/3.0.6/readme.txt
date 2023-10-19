@@ -1,14 +1,14 @@
 === Fathom Analytics ===
-Contributors: convaventures, aurooba
-Tags: fathom analytics, analytics, website stats
+Contributors: convaventures
+Tags: Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
-Tested up to: 5.8.2
-Stable tag: 3.0.5
+Tested up to: 6.1.1
+Stable tag: 3.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.4
 
-Adds the Fathom tracking snippet to your WordPress site and allows you to embed your Fathom dashboard inside the wordpress admin panel.
+A simple, GDPR compliant Google Analytics alternative.
 
 == Description ==
 
@@ -109,9 +109,9 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 == Changelog ==
 
-### 3.0.6 - October 17, 2023
+### 3.0.6 - April 26, 2022
 
-Using wp_enqueue_script for script.js
+Fixed a placeholder.
 
 ### 3.0.5 - Dec 7, 2021
 

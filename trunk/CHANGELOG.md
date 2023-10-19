@@ -1,11 +1,15 @@
 Changelog
 ==========
 
-### 3.0.6 - October 17, 2023
+### 3.0.7 - December 9, 2022
 
-Using `wp_enqueue_script` for script.js
+Tested on new Wordpress version and updated our graphics for the Wordpress plugin page (well done, Paul, they're beautiful).
 
-### 3.0.5 - Dec 7, 2021
+### 3.0.6 - April 26, 2022
+
+Fixed a placeholder.
+
+### 3.0.5 - December 7, 2021
 
 Fixed security issue where an administrator could inject XSS code into the Analytics tab and gain access to super administrator accounts on a multi-site installation.
 

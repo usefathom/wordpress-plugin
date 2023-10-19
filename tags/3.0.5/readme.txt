@@ -1,5 +1,5 @@
 === Fathom Analytics ===
-Contributors: convaventures, aurooba
+Contributors: convaventures
 Tags: fathom analytics, analytics, website stats
 Requires at least: 4.5
 Tested up to: 5.8.2
@@ -12,7 +12,7 @@ Adds the Fathom tracking snippet to your WordPress site and allows you to embed 
 
 == Description ==
 
-**Website analytics without compromise**
+**Fathom analytics is a simple, privacy-focused alternative to Google Analytics**
 For the longest time, website analytics software was seriously bad. It was hard to understand, time-consuming to use, and worse, it exploited visitor data for big tech to profit. Fathom Analytics is website analytics that doesn't suck. We revolutionized website analytics by making them easy to use and respectful of privacy laws (like GDPR, CCPA, PECR and more).
 
 👉 [Check out our live demo](http://usefathom.com/demo)
@@ -108,10 +108,6 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 2. The settings field on the general settings page.
 
 == Changelog ==
-
-### 3.0.6 - October 17, 2023
-
-Using wp_enqueue_script for script.js
 
 ### 3.0.5 - Dec 7, 2021
 

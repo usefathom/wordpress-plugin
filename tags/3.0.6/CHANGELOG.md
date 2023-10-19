@@ -1,9 +1,9 @@
 Changelog
 ==========
 
-### 3.0.6 - October 17, 2023
+### 3.0.6 - April 26, 2022
 
-Using `wp_enqueue_script` for script.js
+Fixed a placeholder.
 
 ### 3.0.5 - Dec 7, 2021
 
