@@ -23,12 +23,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 const FATHOM_PLUGIN_VERSION = '3.0.8';
-const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
 const FATHOM_SHOW_ANALYTICS_MENU_ITEM = 'fathom_show_menu';
+
+/**
+ * Remove the custom domain option as no longer used.
+ *
+ * @link https://usefathom.com/docs/script/custom-domains
+ *
+ * @since 3.0.8
+ */
+if ( is_admin() && get_option( 'fathom_custom_domain' ) ) {
+    delete_option( 'fathom_custom_domain' );
+}
 
 /**
  * Define a few helpful plugin constants if they don't exist.
@@ -169,23 +179,24 @@ function fathom_print_stats_page()
 */
 function fathom_register_settings()
 {
-    $fathom_logo_html = sprintf('<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=20 height=20 style="vertical-align: bottom;"></a>', plugins_url('fathom.png', __FILE__));
+    $custom_domain_notice = sprintf(
+        '<div class="notice notice-warning"><p>%s</p></div>',
+        __( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' )
+    );
 
     // register page + section
-    add_settings_section('default', "Fathom Analytics {$fathom_logo_html}", '__return_true', 'fathom-analytics');
     add_options_page('Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page');
+    add_settings_section('default', "Fathom Analytics {$custom_domain_notice}", '__return_true', 'fathom-analytics');
 
     // register options
     register_setting('fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ));
     register_setting('fathom', FATHOM_ADMIN_TRACKING_OPTION_NAME, array( 'type' => 'string'));
     register_setting('fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ));
     register_setting('fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean', 'default' => 1 ));
-    register_setting('fathom', FATHOM_CUSTOM_DOMAIN_OPTION_NAME, array( 'type' => 'string' ));
 
     // register settings fields
     add_settings_field(FATHOM_SITE_ID_OPTION_NAME, __('Site ID', 'fathom-analytics'), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default');
     add_settings_field(FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
-    add_settings_field(FATHOM_CUSTOM_DOMAIN_OPTION_NAME, __('Custom Domain', 'fathom-analytics'), 'fathom_print_custom_domain_setting_field', 'fathom-analytics', 'default');
     add_settings_field(FATHOM_PRIVATE_SHARE_PASSWORD, __('Fathom Share Password', 'fathom-analytics'), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
     add_settings_field(FATHOM_SHOW_ANALYTICS_MENU_ITEM, __('Display Analytics Menu Item', 'fathom-analytics'), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
 }
@@ -223,17 +234,6 @@ function fathom_print_share_password_setting_field($args = array())
     $placeholder = '';
     echo sprintf('<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_PRIVATE_SHARE_PASSWORD, FATHOM_PRIVATE_SHARE_PASSWORD, esc_attr($value), esc_attr($placeholder));
     echo '<p class="description">' . __('Required if you have shared your dashboard privately. Publicly shared dashboards do not need a password', 'fathom-analytics') . '</p>';
-}
-
-/**
-* @since 2.0.1
-*/
-function fathom_print_custom_domain_setting_field($args = array())
-{
-    $value = get_option(FATHOM_CUSTOM_DOMAIN_OPTION_NAME);
-    $placeholder = 'https://cname.yourwebsite.com';
-    echo sprintf('<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_CUSTOM_DOMAIN_OPTION_NAME, FATHOM_CUSTOM_DOMAIN_OPTION_NAME, esc_attr($value), esc_attr($placeholder));
-    echo '<p class="description">' . __('Optional. Do not put anything in here unless you have a custom domain', 'fathom-analytics') . '</p>';
 }
 
 /**
