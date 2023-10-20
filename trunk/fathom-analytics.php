@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+const FATHOM_PLUGIN_VERSION = '3.0.8';
 const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
@@ -96,9 +97,7 @@ function fathom_enqueue_js_snippet()
         return;
     }
 
-    $script_url = 'https://cdn.usefathom.com/script.js';
-
-    wp_enqueue_script( 'fathom-snippet', esc_url( $script_url ), array(), FATHOM_PLUGIN_VERSION, array( 'strategy' => 'defer' ) );
+    wp_enqueue_script( 'fathom-snippet', 'https://cdn.usefathom.com/script.js', array(), FATHOM_PLUGIN_VERSION, array( 'strategy' => 'defer' ) );
 }
 
 /**
