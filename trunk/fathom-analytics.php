@@ -42,7 +42,7 @@ if ( ! defined( 'FATHOM_PLUGIN_BASENAME' ) && defined( 'FATHOM_PLUGIN_FILE' ) ) 
 }
 
 if ( ! defined( 'FATHOM_SETTINGS_URL' ) ) {
-    define( 'FATHOM_SETTINGS_URL', admin_url( 'options-general.php?page=fathom-analytics' ) );
+    define( 'FATHOM_SETTINGS_URL', admin_url( 'options-general.php?page=fathom-analytics-settings' ) );
 }
 
 /**
@@ -141,7 +141,7 @@ function fathom_stats_page() {
         __( 'Fathom Analytics', 'fathom' ),
         'Fathom Analytics',
         'edit_pages',
-        'analytics',
+        'fathom-analytics',
         'fathom_print_stats_page',
         fathom_get_menu_icon(),
         6
@@ -172,7 +172,7 @@ function fathom_register_settings()
     $fathom_logo_html = sprintf('<a href="https://usefathom.com/" style="margin-left: 6px;"><img src="%s" width=20 height=20 style="vertical-align: bottom;"></a>', plugins_url('fathom.png', __FILE__));
 
     // register page + section
-    add_options_page('Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page');
+    add_options_page('Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics-settings', 'fathom_print_settings_page');
     add_settings_section('default', "Fathom Analytics {$fathom_logo_html}", '__return_true', 'fathom-analytics');
 
     // register options
