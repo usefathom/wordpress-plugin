@@ -141,7 +141,7 @@ function fathom_stats_page() {
         __( 'Fathom Analytics', 'fathom' ),
         'Fathom Analytics',
         'edit_pages',
-        'fathom-analytics',
+        'analytics',
         'fathom_print_stats_page',
         fathom_get_menu_icon(),
         6
