@@ -24,7 +24,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const FATHOM_PLUGIN_VERSION = '3.0.8';
 const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
-const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
@@ -43,27 +42,6 @@ if ( ! defined( 'FATHOM_PLUGIN_BASENAME' ) && defined( 'FATHOM_PLUGIN_FILE' ) ) 
 
 if ( ! defined( 'FATHOM_SETTINGS_URL' ) ) {
     define( 'FATHOM_SETTINGS_URL', admin_url( 'options-general.php?page=fathom-analytics' ) );
-}
-
-/**
-* @since 1.0.0
-*/
-function fathom_get_url()
-{
-    $fathom_url = get_option(FATHOM_URL_OPTION_NAME, '');
-
-    // don't print snippet if fathom URL is empty
-    if (empty($fathom_url)) {
-        return 'cdn.usefathom.com';
-    }
-
-    // trim trailing slash
-    $fathom_url = rtrim($fathom_url, '/');
-
-    // make relative
-    $fathom_url = str_replace(array( 'https:', 'http:' ), '', $fathom_url);
-
-    return $fathom_url;
 }
 
 /**
@@ -87,13 +65,7 @@ function fathom_get_admin_tracking()
 */
 function fathom_enqueue_js_snippet()
 {
-    $url           = fathom_get_url();
-    $exclude_admin = fathom_get_admin_tracking();
-
-    if (
-        empty( $url ) ||
-        empty( $exclude_admin ) && current_user_can( 'manage_options' )
-    ) {
+    if ( empty( fathom_get_admin_tracking() ) && current_user_can( 'manage_options' ) ) {
         return;
     }
 
