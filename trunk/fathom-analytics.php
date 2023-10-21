@@ -23,8 +23,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 const FATHOM_PLUGIN_VERSION = '3.0.8';
-const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
+const FATHOM_URL_OPTION_NAME = 'fathom_url';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
