@@ -1,9 +1,9 @@
-=== Fathom Analytics ===
+=== Fathom Analytics for WordPress ===
 Contributors: convaventures
-Tags: Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
+Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
-Tested up to: 6.1.1
-Stable tag: 3.0.7
+Tested up to: 6.3.2
+Stable tag: 3.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.4
@@ -12,7 +12,7 @@ A simple, GDPR compliant Google Analytics alternative.
 
 == Description ==
 
-**Website analytics without compromise**
+**The Google Analytics alternative for WordPress without compromise**
 For the longest time, website analytics software was seriously bad. It was hard to understand, time-consuming to use, and worse, it exploited visitor data for big tech to profit. Fathom Analytics is website analytics that doesn't suck. We revolutionized website analytics by making them easy to use and respectful of privacy laws (like GDPR, CCPA, PECR and more).
 
 👉 [Check out our live demo](http://usefathom.com/demo)
@@ -111,7 +111,9 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 #### 3.0.8 - October 25, 2023
 
-Added settings link from plugin page, added Fathom to header not footer, etc. WIP
+Added settings link from plugin page
+Moved Fathom script from footer to header
+Remove custom domain setting (see https://usefathom.com/docs/script/custom-domains)
 
 ### 3.0.7 - December 9, 2022
 
