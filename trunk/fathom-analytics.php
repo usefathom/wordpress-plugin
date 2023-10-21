@@ -196,7 +196,10 @@ function fathom_register_settings()
  * @since 3.0.8
  */
 function fathom_settings_intro( $args ) {
-	$intro = '';
+	$intro = sprintf(
+		'<div class="notice notice-info"><p>%s</p></div>',
+		__( 'If you are enjoying the Fathom plugin for Wordpress, <a href="https://wordpress.org/plugins/fathom-analytics/" target="_blank">please leave us a ⭐️⭐️⭐️⭐️⭐️ rating</a>. <strong>Huge</strong> thanks in advance :)', 'fathom' ),
+	);
 
 	if ( get_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME ) ) {
 		if ( isset( $_GET['action'] ) && 'remove_custom_domain' === $_GET['action'] ) {
