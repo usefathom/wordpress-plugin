@@ -179,14 +179,9 @@ function fathom_print_stats_page()
 */
 function fathom_register_settings()
 {
-    $custom_domain_notice = sprintf(
-        '<div class="notice notice-warning"><p>%s</p></div>',
-        __( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' )
-    );
-
     // register page + section
-    add_options_page('Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page');
-    add_settings_section('default', "Fathom Analytics {$custom_domain_notice}", '__return_true', 'fathom-analytics');
+    add_options_page( 'Fathom Analytics', 'Fathom Analytics', 'manage_options', 'fathom-analytics', 'fathom_print_settings_page' );
+    add_settings_section( 'default', "Fathom Analytics", 'fathom_settings_intro', 'fathom-analytics' );
 
     // register options
     register_setting('fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ));
@@ -199,6 +194,24 @@ function fathom_register_settings()
     add_settings_field(FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
     add_settings_field(FATHOM_PRIVATE_SHARE_PASSWORD, __('Fathom Share Password', 'fathom-analytics'), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
     add_settings_field(FATHOM_SHOW_ANALYTICS_MENU_ITEM, __('Display Analytics Menu Item', 'fathom-analytics'), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
+}
+
+/**
+ * Settings page intro HTML.
+ *
+ * @param array $args Display arguments.
+ *
+ * @return string
+ *
+ * @since 3.0.8
+ */
+function fathom_settings_intro( $args ) {
+	$intro = sprintf(
+        '<div class="notice notice-warning"><p>%s</p></div>',
+        __( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' )
+    );
+
+	echo $intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
