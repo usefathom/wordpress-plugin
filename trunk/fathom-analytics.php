@@ -24,21 +24,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const FATHOM_PLUGIN_VERSION = '3.0.8';
 const FATHOM_URL_OPTION_NAME = 'fathom_url';
+const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
 const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
 const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
 const FATHOM_SHOW_ANALYTICS_MENU_ITEM = 'fathom_show_menu';
-
-/**
- * Remove the custom domain option as no longer used.
- *
- * @link https://usefathom.com/docs/script/custom-domains
- *
- * @since 3.0.8
- */
-if ( is_admin() && get_option( 'fathom_custom_domain' ) ) {
-    delete_option( 'fathom_custom_domain' );
-}
 
 /**
  * Define a few helpful plugin constants if they don't exist.
@@ -206,10 +196,23 @@ function fathom_register_settings()
  * @since 3.0.8
  */
 function fathom_settings_intro( $args ) {
-	$intro = sprintf(
-        '<div class="notice notice-warning"><p>%s</p></div>',
-        __( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' )
-    );
+	$intro = '';
+
+	if ( get_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME ) ) {
+		if ( isset( $_GET['action'] ) && 'remove_custom_domain' === $_GET['action'] ) {
+			delete_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME );
+		} else {
+			$intro .= sprintf(
+				'<div class="notice notice-warning"><p>%s</p><p>%s</p></div>',
+				__( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' ),
+				sprintf(
+					'<a href="%s" class="button button-secondary" style="flex-shrink:0;">%s</a>',
+					esc_url( add_query_arg( 'action', 'remove_custom_domain' ) ),
+					__( 'Got it!', 'fathom' )
+				)
+			);
+		}
+	}
 
 	echo $intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
