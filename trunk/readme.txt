@@ -109,11 +109,12 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 == Changelog ==
 
-#### 3.0.8 - October 25, 2023
+#### 3.1.0 - October 25, 2023
 
 Added settings link from plugin page
 Moved Fathom script from footer to header
 Remove custom domain setting (see https://usefathom.com/docs/script/custom-domains)
+Add support to exclude logged in users by role from tracking
 
 ### 3.0.7 - December 9, 2022
 

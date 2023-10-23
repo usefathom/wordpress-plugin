@@ -22,12 +22,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION = '3.0.8';
-const FATHOM_CUSTOM_DOMAIN_OPTION_NAME = 'fathom_custom_domain';
-const FATHOM_SITE_ID_OPTION_NAME = 'fathom_site_id';
+const FATHOM_PLUGIN_VERSION            = '3.0.8';
+const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
+const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
+const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
+const FATHOM_SHOW_ANALYTICS_MENU_ITEM  = 'fathom_show_menu';
+
+/**
+ * Deprecated constants.
+ *
+ * These constants are deprecated and will be removed in a future version.
+ */
 const FATHOM_ADMIN_TRACKING_OPTION_NAME = 'fathom_track_admin';
-const FATHOM_PRIVATE_SHARE_PASSWORD = 'fathom_share_password';
-const FATHOM_SHOW_ANALYTICS_MENU_ITEM = 'fathom_show_menu';
+const FATHOM_CUSTOM_DOMAIN_OPTION_NAME  = 'fathom_custom_domain';
 
 /**
  * Define a few helpful plugin constants if they don't exist.
@@ -53,11 +60,32 @@ function fathom_get_site_id()
 }
 
 /**
- * @since 1.0.1
+ * @since 3.0.8
  */
-function fathom_get_admin_tracking()
+function fathom_get_excluded_roles()
 {
-    return get_option(FATHOM_ADMIN_TRACKING_OPTION_NAME, '');
+    $excluded_roles = get_option( FATHOM_EXCLUDE_ROLES_OPTION_NAME, array() );
+
+    if ( ! is_array( $excluded_roles ) ) {
+        $excluded_roles = array();
+    }
+
+    return $excluded_roles;
+}
+
+/**
+ * Determine if the current user has any of the excluded roles.
+ *
+ * @return void
+ */
+function fathom_is_excluded_from_tracking() {
+    if ( ! is_user_logged_in() ) {
+        return false;
+    }
+
+    $user = wp_get_current_user();
+
+    return array_intersect( fathom_get_excluded_roles(), $user->roles );
 }
 
 /**
@@ -65,7 +93,7 @@ function fathom_get_admin_tracking()
 */
 function fathom_enqueue_js_snippet()
 {
-    if ( empty( fathom_get_admin_tracking() ) && current_user_can( 'manage_options' ) ) {
+    if ( fathom_is_excluded_from_tracking() ) {
         return;
     }
 
@@ -146,15 +174,15 @@ function fathom_register_settings()
     add_settings_section( 'default', "Fathom Analytics", 'fathom_settings_intro', 'fathom-analytics' );
 
     // register options
-    register_setting('fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ));
-    register_setting('fathom', FATHOM_ADMIN_TRACKING_OPTION_NAME, array( 'type' => 'string'));
-    register_setting('fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ));
-    register_setting('fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean', 'default' => 1 ));
+    register_setting( 'fathom', FATHOM_SITE_ID_OPTION_NAME, array( 'type' => 'string' ) );
+    register_setting( 'fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ) );
+    register_setting( 'fathom', FATHOM_EXCLUDE_ROLES_OPTION_NAME, array( 'type' => 'multi_checkbox' ) );
+    register_setting( 'fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean', 'default' => 1 ) );
 
     // register settings fields
     add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default');
-    add_settings_field( FATHOM_ADMIN_TRACKING_OPTION_NAME, __( 'Track Administrators', 'fathom-analytics' ), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
-    add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Fathom Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_EXCLUDE_ROLES_OPTION_NAME, __( 'Exclude Roles', 'fathom-analytics' ), 'fathom_print_exclude_roles_setting_field', 'fathom-analytics', 'default' );
     add_settings_field( FATHOM_SHOW_ANALYTICS_MENU_ITEM, __( 'Display Analytics Menu Item', 'fathom-analytics' ), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
 }
 
@@ -228,6 +256,34 @@ function fathom_print_share_password_setting_field($args = array())
 }
 
 /**
+ * Exclude Roles Field
+ *
+ * @param array $args
+ *
+ * @return void
+ */
+function fathom_print_exclude_roles_setting_field( $args = array() ) {
+    $wp_roles = new WP_Roles();
+    $roles    = array();
+
+    foreach ( $wp_roles->get_names() as $role => $label ) {
+        $roles[ $role ] = translate_user_role( $label );
+    }
+
+    $excluded_roles = fathom_get_excluded_roles();
+
+    echo '<fieldset>';
+        foreach ( $roles as $role => $label ) {
+            $checked = in_array( $role, $excluded_roles, true ) ? 'checked' : '';
+            echo sprintf( '<input type="checkbox" name="%s[]" id="%s" value="%s" %s />', FATHOM_EXCLUDE_ROLES_OPTION_NAME, $role, $role, $checked );
+            echo sprintf( '<label for="%s">%s</label><br />', $role, $label );
+        }
+    echo '</fieldset>';
+
+    echo '<p class="description">' . __( 'Choose the roles you would like to exclude from tracking.', 'fathom-analytics' ) . '</p>';
+}
+
+/**
 * @since 1.0.1
 */
 function fathom_print_site_id_setting_field($args = array())
@@ -236,16 +292,6 @@ function fathom_print_site_id_setting_field($args = array())
     $placeholder = 'ABCDEF';
     echo sprintf('<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_SITE_ID_OPTION_NAME, FATHOM_SITE_ID_OPTION_NAME, esc_attr($value), esc_attr($placeholder));
     echo '<p class="description">' . __('This is the <a href="https://usefathom.com/support/wordpress" target="_blank">unique Tracking ID</a> for your site', 'fathom-analytics') . '</p>';
-}
-
-/**
- * @since 1.0.1
- */
-function fathom_print_admin_tracking_setting_field($args = array())
-{
-    $value = get_option(FATHOM_ADMIN_TRACKING_OPTION_NAME);
-    echo sprintf('<input type="checkbox" name="%s" id="%s" value="1" %s />', FATHOM_ADMIN_TRACKING_OPTION_NAME, FATHOM_ADMIN_TRACKING_OPTION_NAME, checked(1, $value, false));
-    echo '<p class="description">' . __('Check if you want to track visits by administrators', 'fathom-analytics') . '</p>';
 }
 
 add_action( 'wp_enqueue_scripts', 'fathom_enqueue_js_snippet' );
@@ -260,6 +306,35 @@ if ( is_admin() && ! wp_doing_ajax() ) {
     if ( get_option( FATHOM_SHOW_ANALYTICS_MENU_ITEM ) ) {
         add_action( 'admin_menu', 'fathom_stats_page' );
     }
+}
+
+/**
+ * Migrate old settings for admin tracking into exclusion settings.
+ *
+ * @since 3.0.8
+ */
+function fathom_migrate_settings() {
+
+    // Remove custom domain option if it's empty.
+    if ( empty( get_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME ) ) ) {
+        delete_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME );
+    }
+
+    // Migrate admin tracking option to exclusion roles.
+    if ( ! get_option( FATHOM_EXCLUDE_ROLES_OPTION_NAME ) ) {
+        $exclude_roles = array();
+
+        if ( ! get_option( FATHOM_ADMIN_TRACKING_OPTION_NAME ) ) {
+            $exclude_roles[] = 'administrator';
+        }
+
+        add_option( FATHOM_EXCLUDE_ROLES_OPTION_NAME, $exclude_roles );
+        delete_option( FATHOM_ADMIN_TRACKING_OPTION_NAME );
+    }
+}
+
+if ( ! wp_doing_ajax() ) {
+    fathom_migrate_settings();
 }
 
 /**
