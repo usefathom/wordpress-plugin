@@ -251,12 +251,15 @@ function fathom_print_admin_tracking_setting_field($args = array())
 add_action( 'wp_enqueue_scripts', 'fathom_enqueue_js_snippet' );
 add_filter( 'script_loader_tag', 'fathom_add_data_attributes_to_js_script', 10, 3 );
 
-if (is_admin() && ! wp_doing_ajax()) {
-    add_action('admin_menu', 'fathom_register_settings');
-}
+/**
+ * Admin only actions.
+ */
+if ( is_admin() && ! wp_doing_ajax() ) {
+    add_action( 'admin_menu', 'fathom_register_settings' );
 
-if (get_option(FATHOM_SHOW_ANALYTICS_MENU_ITEM)) {
-    add_action('admin_menu', 'fathom_stats_page');
+    if ( get_option( FATHOM_SHOW_ANALYTICS_MENU_ITEM ) ) {
+        add_action( 'admin_menu', 'fathom_stats_page' );
+    }
 }
 
 /**
