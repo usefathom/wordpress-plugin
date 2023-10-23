@@ -110,7 +110,7 @@ function fathom_get_menu_icon() {
  */
 function fathom_stats_page() {
     add_menu_page(
-        __( 'Fathom Analytics', 'fathom' ),
+        __( 'Fathom Analytics', 'fathom-analytics' ),
         'Fathom Analytics',
         'edit_pages',
         'analytics',
@@ -152,10 +152,10 @@ function fathom_register_settings()
     register_setting('fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean', 'default' => 1 ));
 
     // register settings fields
-    add_settings_field(FATHOM_SITE_ID_OPTION_NAME, __('Site ID', 'fathom-analytics'), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default');
-    add_settings_field(FATHOM_ADMIN_TRACKING_OPTION_NAME, __('Track Administrators', 'fathom-analytics'), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
-    add_settings_field(FATHOM_PRIVATE_SHARE_PASSWORD, __('Fathom Share Password', 'fathom-analytics'), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
-    add_settings_field(FATHOM_SHOW_ANALYTICS_MENU_ITEM, __('Display Analytics Menu Item', 'fathom-analytics'), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_ADMIN_TRACKING_OPTION_NAME, __( 'Track Administrators', 'fathom-analytics' ), 'fathom_print_admin_tracking_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Fathom Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_SHOW_ANALYTICS_MENU_ITEM, __( 'Display Analytics Menu Item', 'fathom-analytics' ), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
 }
 
 /**
@@ -170,7 +170,7 @@ function fathom_register_settings()
 function fathom_settings_intro( $args ) {
 	$intro = sprintf(
 		'<div class="notice notice-info"><p>%s</p></div>',
-		__( 'If you are enjoying the Fathom plugin for Wordpress, <a href="https://wordpress.org/plugins/fathom-analytics/" target="_blank">please leave us a ⭐️⭐️⭐️⭐️⭐️ rating</a>. <strong>Huge</strong> thanks in advance :)', 'fathom' ),
+		__( 'If you are enjoying the Fathom plugin for Wordpress, <a href="https://wordpress.org/plugins/fathom-analytics/" target="_blank">please leave us a ⭐️⭐️⭐️⭐️⭐️ rating</a>. <strong>Huge</strong> thanks in advance :)', 'fathom-analytics' ),
 	);
 
 	if ( get_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME ) ) {
@@ -179,11 +179,11 @@ function fathom_settings_intro( $args ) {
 		} else {
 			$intro .= sprintf(
 				'<div class="notice notice-warning"><p>%s</p><p>%s</p></div>',
-				__( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom' ),
+				__( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom-analytics' ),
 				sprintf(
 					'<a href="%s" class="button button-secondary" style="flex-shrink:0;">%s</a>',
 					esc_url( add_query_arg( 'action', 'remove_custom_domain' ) ),
-					__( 'Got it!', 'fathom' )
+					__( 'Got it!', 'fathom-analytics' )
 				)
 			);
 		}
@@ -275,8 +275,8 @@ function add_plugin_action_links( $plugin_links, $plugin_file ) {
 		return $plugin_links;
 	}
 
-	$settings_link  = '<a href="' . FATHOM_SETTINGS_URL . '" aria-label="' . esc_attr( __( 'Navigate to the Fathom Analytics settings.', 'fathom' ) ) . '">';
-	$settings_link .= __( 'Settings', 'fathom' );
+	$settings_link  = '<a href="' . FATHOM_SETTINGS_URL . '" aria-label="' . esc_attr( __( 'Navigate to the Fathom Analytics settings.', 'fathom-analytics' ) ) . '">';
+	$settings_link .= __( 'Settings', 'fathom-analytics' );
 	$settings_link .= '</a>';
 
     // Add Settings link beside 'Deactivate'
