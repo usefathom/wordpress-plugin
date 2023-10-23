@@ -3,7 +3,7 @@ Contributors: convaventures
 Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
 Tested up to: 6.3.2
-Stable tag: 3.0.8
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.4
@@ -111,10 +111,10 @@ You may think that digital privacy doesn’t matter because you have nothing to 
 
 #### 3.1.0 - October 25, 2023
 
-Added settings link from plugin page
 Moved Fathom script from footer to header
 Remove custom domain setting (see https://usefathom.com/docs/script/custom-domains)
 Add support to exclude logged in users by role from tracking
+Added settings link from plugin page
 
 ### 3.0.7 - December 9, 2022
 

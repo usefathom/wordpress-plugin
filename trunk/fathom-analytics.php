@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
-Version: 3.0.8
+Version: 3.1.0
 
 Fathom Analytics for WordPress
 Copyright (C) 2020 Conva Ventures Inc
@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION            = '3.0.8';
+const FATHOM_PLUGIN_VERSION            = '3.1.0';
 const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
 const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
 const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
@@ -60,7 +60,7 @@ function fathom_get_site_id()
 }
 
 /**
- * @since 3.0.8
+ * @since 3.1.0
  */
 function fathom_get_excluded_roles()
 {
@@ -89,7 +89,7 @@ function fathom_is_excluded_from_tracking() {
 }
 
 /**
-* @since 3.0.8
+* @since 3.1.0
 */
 function fathom_enqueue_js_snippet()
 {
@@ -125,7 +125,7 @@ function fathom_add_data_attributes_to_js_script( $tag, $handle, $src )
  *
  * @return string
  *
- * @since 3.0.8
+ * @since 3.1.0
  */
 function fathom_get_menu_icon() {
     $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 32 32"><path fill="currentColor" d="M31.076 5.305h-1.127a.927.927 0 0 0-.874.621l-7.027 20.159a.927.927 0 0 0 .874 1.23h1.127a.926.926 0 0 0 .873-.62l7.026-20.16a.926.926 0 0 0-.873-1.23m-25.398 6.41v-.919a.927.927 0 0 0-.926-.926H2.98v-.852c-.003-.995.221-1.591.423-1.808l.01-.012a1.04 1.04 0 0 1 .5-.273 12.087 12.087 0 0 1 1.98-.153h.34a.927.927 0 0 0 .926-.927v-.83a.924.924 0 0 0-.748-.91 9.82 9.82 0 0 0-.377-.064C5.859 4.014 4.941 4 4.761 4H4.75c-1.492 0-2.763.348-3.613 1.261l-.002.002C.304 6.178.004 7.473 0 9.047V26.39a.927.927 0 0 0 .927.927h1.126a.927.927 0 0 0 .927-.927V12.64h1.772a.927.927 0 0 0 .926-.926m11.742-1.286a6.993 6.993 0 0 0-3.598-.855 8.192 8.192 0 0 0-3.59.73 5.763 5.763 0 0 0-2.445 2.186l-.004.006a.799.799 0 0 0-.12.422.845.845 0 0 0 .567.795l.91.323a1.297 1.297 0 0 0 1.44-.407c.085-.105.177-.206.274-.3.595-.578 1.478-.918 2.851-.923a4.958 4.958 0 0 1 1.739.27c.4.145.754.394 1.025.721.515.632.84 1.608.869 3.007-1.324.02-2.498.076-3.512.17a16.505 16.505 0 0 0-3.747.78l-.004.002-.011.003h-.002a5.958 5.958 0 0 0-2.877 1.781 4.826 4.826 0 0 0-1.045 3.17v.03a5.117 5.117 0 0 0 .787 2.836 4.904 4.904 0 0 0 2.2 1.826 7.872 7.872 0 0 0 3.157.58 7.195 7.195 0 0 0 2.433-.454 7.733 7.733 0 0 0 2.39-1.411c.14-.12.271-.246.398-.376.083.54.266 1.06.54 1.533a.92.92 0 0 0 .79.441h.002l.542-.006a.926.926 0 0 0 .915-.927v-9.923a8.683 8.683 0 0 0-.672-3.548 5.346 5.346 0 0 0-2.198-2.482m-.753 11.746a5.459 5.459 0 0 1-1.83 1.907 4.492 4.492 0 0 1-2.468.7c-1.165-.001-1.948-.269-2.476-.705a2.059 2.059 0 0 1-.58-.75 2.672 2.672 0 0 1-.197-1.058c-.007-.425.1-.845.309-1.216a2.477 2.477 0 0 1 1.137-.912 10.438 10.438 0 0 1 2.875-.749 32.23 32.23 0 0 1 3.906-.274v.573a4.846 4.846 0 0 1-.676 2.485"/></svg>';
@@ -193,7 +193,7 @@ function fathom_register_settings()
  *
  * @return string
  *
- * @since 3.0.8
+ * @since 3.1.0
  */
 function fathom_settings_intro( $args ) {
 	$intro = sprintf(
@@ -311,7 +311,7 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 /**
  * Migrate old settings for admin tracking into exclusion settings.
  *
- * @since 3.0.8
+ * @since 3.1.0
  */
 function fathom_migrate_settings() {
 
@@ -340,7 +340,7 @@ if ( ! wp_doing_ajax() ) {
 /**
  * Adds link to Settings page in plugin action links.
  *
- * @since 3.0.8
+ * @since 3.1.0
  *
  * @param array  $plugin_links Already defined action links.
  * @param string $plugin_file Plugin file path and name being processed.
