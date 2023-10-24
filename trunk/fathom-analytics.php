@@ -198,7 +198,7 @@ function fathom_register_settings()
 function fathom_settings_intro( $args ) {
 	$intro = sprintf(
 		'<div class="notice notice-info"><p>%s</p></div>',
-		__( 'If you are enjoying the Fathom plugin for Wordpress, <a href="https://wordpress.org/plugins/fathom-analytics/" target="_blank">please leave us a ⭐️⭐️⭐️⭐️⭐️ rating</a>. <strong>Huge</strong> thanks in advance :)', 'fathom-analytics' ),
+		__( 'If you are enjoying the Fathom plugin for Wordpress, <a href="https://wordpress.org/support/plugin/fathom-analytics/reviews/#new-post" target="_blank">please leave us a ⭐️⭐️⭐️⭐️⭐️ rating</a>. <strong>Huge</strong> thanks in advance :)', 'fathom-analytics' ),
 	);
 
 	if ( get_option( FATHOM_CUSTOM_DOMAIN_OPTION_NAME ) ) {
