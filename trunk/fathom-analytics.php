@@ -252,7 +252,7 @@ function fathom_print_share_password_setting_field($args = array())
     $value = get_option(FATHOM_PRIVATE_SHARE_PASSWORD);
     $placeholder = '';
     echo sprintf('<input type="text" name="%s" id="%s" class="regular-text" value="%s" placeholder="%s" />', FATHOM_PRIVATE_SHARE_PASSWORD, FATHOM_PRIVATE_SHARE_PASSWORD, esc_attr($value), esc_attr($placeholder));
-    echo '<p class="description">' . __('Required if you have shared your dashboard privately. Publicly shared dashboards do not need a password', 'fathom-analytics') . '</p>';
+    echo '<p class="description">' . __('Required if you have shared your dashboard <a href="https://usefathom.com/docs/features/shared-dashboards" target="_blank">privately</a>. Publicly shared dashboards do not need a password.', 'fathom-analytics') . '</p>';
 }
 
 /**
