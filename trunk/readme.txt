@@ -1,4 +1,4 @@
-=== Fathom Analytics for WordPress ===
+=== Fathom Analytics for WP ===
 Contributors: convaventures
 Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
