@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Fathom Analytics
+Plugin Name: Fathom Analytics for WP
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
 Version: 3.1.0
