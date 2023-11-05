@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics for WP
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
-Version: 3.1.2
+Version: 3.2.0
 
 Fathom Analytics for WordPress
 Copyright (C) 2023 Conva Ventures Inc
@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION            = '3.1.2';
+const FATHOM_PLUGIN_VERSION            = '3.2.0';
 const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
 const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
 const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
@@ -363,3 +363,58 @@ function add_plugin_action_links( $plugin_links, $plugin_file ) {
 	return $plugin_links;
 }
 add_filter( 'plugin_action_links', 'add_plugin_action_links', 10, 2 );
+
+/**
+ * Exclude Fathom from WP Rocket minification.
+ *
+ * @param array $excluded The excluded hostnames.
+ *
+ * @since 3.2.0
+ *
+ * @return array
+ */
+function fathom_exclude_from_wp_rocket_minify( $excluded ) {
+    $excluded[] = 'cdn.usefathom.com';
+    return $excluded;
+}
+
+add_filter( 'rocket_minify_excluded_external_js', 'fathom_exclude_from_wp_rocket_minify' );
+
+/**
+ * Exclude Fathom from SG Optimizer minification.
+ *
+ * @param array $excluded The excluded hostnames.
+ *
+ * @since 3.2.0
+ *
+ * @return array
+ */
+function fathom_exclude_from_sg_optimizer_minify( $excluded ) {
+    $excluded[] = 'cdn.usefathom.com';
+    return $excluded;
+}
+
+add_filter( 'sgo_javascript_combine_excluded_external_paths', 'fathom_exclude_from_sg_optimizer_minify' );
+
+/**
+ * Exclude Fathom from Hummingbird.
+ *
+ * @param bool   $minify Whether to minify the resource.
+ * @param string $handle The resource handle.
+ * @param string $type   The resource type.
+ * @param string $url    The resource URL.
+ *
+ * @since 3.2.0
+ *
+ * @return bool
+ */
+function fathom_exclude_from_wphb( $minify, $handle, $type, $url ) {
+    if ( 'fathom-snippet' === $handle ) {
+        $minify = false;
+    }
+
+    return $minify;
+}
+
+add_filter( 'wphb_minify_resource', 'fathom_exclude_from_wphb', 10, 4 );
+add_filter( 'wphb_combine_resource', 'fathom_exclude_from_wphb', 10, 4 );

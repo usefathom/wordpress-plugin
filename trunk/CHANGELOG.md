@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+### 3.2.0 - November 6, 2023
+
+Exclude Fathom script from cache plugin minification and combination (including WP Rocket, SG Optimizer and Hummingbird)
+
 #### 3.1.2 - October 26, 2023
 
 Needed NULL not FALSE for wp_enqueue_script, fixed it now, thanks for the patience folks <3
