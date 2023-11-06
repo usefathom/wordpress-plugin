@@ -3,7 +3,7 @@ Contributors: convaventures
 Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
 Tested up to: 6.3.2
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.4
@@ -96,6 +96,10 @@ See our contact page for details: https://usefathom.com/contact
 2. The settings field on the general settings page.
 
 == Changelog ==
+
+### 3.2.0 - November 6, 2023
+
+Added a way to avoid our embed script being minified and combined (which breaks our embed script) in some caching plugins.
 
 #### 3.1.2 - October 26, 2023
 
