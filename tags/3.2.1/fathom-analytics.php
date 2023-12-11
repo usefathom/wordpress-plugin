@@ -207,7 +207,7 @@ function fathom_settings_intro( $args ) {
 		} else {
 			$intro .= sprintf(
 				'<div class="notice notice-warning"><p>%s</p><p>%s</p></div>',
-				__( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom-analytics' ),
+				__( 'As of May 9, 2023, we can no longer support custom domains - you can read more <a target="_blank" href="https://usefathom.com/docs/script/custom-domains">here</a>.', 'fathom-analytics' )
 				sprintf(
 					'<a href="%s" class="button button-secondary" style="flex-shrink:0;">%s</a>',
 					esc_url( add_query_arg( 'action', 'remove_custom_domain' ) ),
