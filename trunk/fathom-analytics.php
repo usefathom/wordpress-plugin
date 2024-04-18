@@ -140,7 +140,7 @@ function fathom_stats_page() {
     add_menu_page(
         __( 'Fathom Analytics', 'fathom-analytics' ),
         'Fathom Analytics',
-        'edit_pages',
+        apply_filters( 'fathom_stats_required_capability', 'edit_pages' ),
         'analytics',
         'fathom_print_stats_page',
         fathom_get_menu_icon(),
