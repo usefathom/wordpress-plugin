@@ -435,3 +435,13 @@ function fathom_exclude_from_litespeed( $excluded ) {
 }
 
 add_filter( 'litespeed_optimize_js_excludes', 'fathom_exclude_from_litespeed' );
+
+function allow_fathom_script($allowed, $handle) {
+    // Check if the script handle matches your script
+    if ($handle === 'fathom-snippet') {
+        return true;
+    }
+    return $allowed;
+}
+
+add_filter('op3_script_is_allowed_in_blank_template', 'allow_fathom_script', 10, 2);
