@@ -6,7 +6,7 @@ Author: Conva Ventures Inc
 Version: 3.2.3
 
 Fathom Analytics for WordPress
-Copyright (C) 2023 Conva Ventures Inc
+Copyright (C) 2024 Conva Ventures Inc
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
