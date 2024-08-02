@@ -3,8 +3,7 @@
 Plugin Name: Fathom Analytics for WP
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
-Version: 3.2.4
-Tested up to: 6.6
+Version: 3.2.3
 
 Fathom Analytics for WordPress
 Copyright (C) 2024 Conva Ventures Inc
@@ -23,7 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION            = '3.2.4';
+const FATHOM_PLUGIN_VERSION            = '3.2.3';
 const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
 const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
 const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
