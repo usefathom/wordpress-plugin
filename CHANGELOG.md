@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+### 3.2.4 - August 16, 2024
+
+Added a way to automatically exclude the Fathom script from Cookiebot if the Cookiebot plugin is active.
+
 ### 3.2.3 - June 27, 2024
 
 Added a way for our embed script to be added to OptimizePress pages.

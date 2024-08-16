@@ -3,7 +3,7 @@
 Plugin Name: Fathom Analytics for WP
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
-Version: 3.2.3
+Version: 3.2.4
 
 Fathom Analytics for WordPress
 Copyright (C) 2024 Conva Ventures Inc
@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION            = '3.2.3';
+const FATHOM_PLUGIN_VERSION            = '3.2.4';
 const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
 const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
 const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
@@ -114,7 +114,7 @@ function fathom_enqueue_js_snippet()
 function fathom_add_data_attributes_to_js_script( $tag, $handle, $src )
 {
     if ( 'fathom-snippet' === $handle ) {
-        $tag = str_replace( '></script>', ' data-site="' . fathom_get_site_id() . '" data-no-minify></script>', $tag );
+        $tag = str_replace( '></script>', ' data-site="' . fathom_get_site_id() . '"  ' . exclude_fathom_script_from_cookiebot() . ' data-no-minify></script>', $tag );
     }
 
     return $tag;
@@ -455,3 +455,19 @@ function allow_fathom_script($allowed, $handle) {
 }
 
 add_filter('op3_script_is_allowed_in_blank_template', 'allow_fathom_script', 10, 2);
+
+/**
+ * Exclude Fathom script from Cookiebot.
+ *
+ * @since 3.2.4
+ *
+ * @return string
+ */
+
+function exclude_fathom_script_from_cookiebot() {
+	if ( in_array( 'cookiebot/cookiebot.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		return 'data-cookieconsent="ignore"';
+    } else {
+        return '';
+	}
+}
