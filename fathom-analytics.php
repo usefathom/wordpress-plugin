@@ -465,9 +465,9 @@ add_filter('op3_script_is_allowed_in_blank_template', 'allow_fathom_script', 10,
  */
 
 function exclude_fathom_script_from_cookiebot() {
-	if ( in_array( 'cookiebot/cookiebot.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-		return 'data-cookieconsent="ignore"';
+    if ( in_array( 'cookiebot/cookiebot.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+        return 'data-cookieconsent="ignore"';
     } else {
         return '';
-	}
+    }
 }
