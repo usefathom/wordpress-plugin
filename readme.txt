@@ -97,9 +97,9 @@ See our contact page for details: https://usefathom.com/contact
 
 == Changelog ==
 
-### 3.2.4 - August 16, 2024
+### 3.2.4 - September 5, 2024
 
-Added a way to automatically exclude the Fathom script from Cookiebot if the Cookiebot plugin is active.
+Add support for WordPress 6.6
 
 ### 3.2.3 - June 27, 2024
 
