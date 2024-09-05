@@ -2,7 +2,7 @@
 Contributors: convaventures
 Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
-Tested up to: 6.6
+Tested up to: 6.6.1
 Stable tag: 3.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
