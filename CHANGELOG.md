@@ -1,6 +1,14 @@
 Changelog
 ==========
 
+### 3.3.1 - November 12, 2025
+
+Added the ability to ignore canonical links and tested on latest WordPress version
+
+### 3.3.0 - September 5, 2024
+
+Add cookiebot exclusion to script
+
 ### 3.2.4 - August 16, 2024
 
 Added a way to automatically exclude the Fathom script from Cookiebot if the Cookiebot plugin is active.
