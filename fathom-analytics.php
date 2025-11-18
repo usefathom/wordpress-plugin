@@ -3,11 +3,11 @@
 Plugin Name: Fathom Analytics for WP
 Description: Fathom analytics is a simple, GDPR-compliant alternative to Google Analytics.
 Author: Conva Ventures Inc
-Version: 3.3.0
-Tested up to: 6.6
+Version: 3.3.1
+Tested up to: 6.8.3
 
 Fathom Analytics for WordPress
-Copyright (C) 2024 Conva Ventures Inc
+Copyright (C) 2025 Conva Ventures Inc
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,11 +23,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const FATHOM_PLUGIN_VERSION            = '3.3.0';
+const FATHOM_PLUGIN_VERSION            = '3.3.1';
 const FATHOM_SITE_ID_OPTION_NAME       = 'fathom_site_id';
 const FATHOM_EXCLUDE_ROLES_OPTION_NAME = 'fathom_exclude_roles';
 const FATHOM_PRIVATE_SHARE_PASSWORD    = 'fathom_share_password';
 const FATHOM_SHOW_ANALYTICS_MENU_ITEM  = 'fathom_show_menu';
+const FATHOM_IGNORE_CANONICAL          = 'fathom_ignore_canonical';
 
 /**
  * Deprecated constants.
@@ -115,7 +116,14 @@ function fathom_enqueue_js_snippet()
 function fathom_add_data_attributes_to_js_script( $tag, $handle, $src )
 {
     if ( 'fathom-snippet' === $handle ) {
-        $tag = str_replace( '></script>', ' data-site="' . fathom_get_site_id() . '"  ' . exclude_fathom_script_from_cookiebot() . ' data-no-minify></script>', $tag );
+        $attributes = ' data-site="' . fathom_get_site_id() . '"  ' . exclude_fathom_script_from_cookiebot();
+
+        if ( get_option( FATHOM_IGNORE_CANONICAL ) ) {
+            $attributes .= ' data-canonical="false"';
+        }
+
+        $attributes .= ' data-no-minify';
+        $tag = str_replace( '></script>', $attributes . '></script>', $tag );
     }
 
     return $tag;
@@ -179,12 +187,14 @@ function fathom_register_settings()
     register_setting( 'fathom', FATHOM_PRIVATE_SHARE_PASSWORD, array( 'type' => 'string' ) );
     register_setting( 'fathom', FATHOM_EXCLUDE_ROLES_OPTION_NAME, array( 'type' => 'multi_checkbox' ) );
     register_setting( 'fathom', FATHOM_SHOW_ANALYTICS_MENU_ITEM, array( 'type' => 'boolean', 'default' => 1 ) );
+    register_setting( 'fathom', FATHOM_IGNORE_CANONICAL, array( 'type' => 'boolean', 'default' => 0 ) );
 
     // register settings fields
     add_settings_field( FATHOM_SITE_ID_OPTION_NAME, __( 'Site ID', 'fathom-analytics' ), 'fathom_print_site_id_setting_field', 'fathom-analytics', 'default');
     add_settings_field( FATHOM_PRIVATE_SHARE_PASSWORD, __( 'Share Password', 'fathom-analytics' ), 'fathom_print_share_password_setting_field', 'fathom-analytics', 'default');
     add_settings_field( FATHOM_EXCLUDE_ROLES_OPTION_NAME, __( 'Exclude Roles', 'fathom-analytics' ), 'fathom_print_exclude_roles_setting_field', 'fathom-analytics', 'default' );
     add_settings_field( FATHOM_SHOW_ANALYTICS_MENU_ITEM, __( 'Display Analytics Menu Item', 'fathom-analytics' ), 'fathom_print_display_analytics_menu_setting_field', 'fathom-analytics', 'default');
+    add_settings_field( FATHOM_IGNORE_CANONICAL, __( 'Ignore canonicals', 'fathom-analytics' ), 'fathom_print_ignore_canonical_setting_field', 'fathom-analytics', 'default');
 }
 
 /**
@@ -243,6 +253,22 @@ function fathom_print_display_analytics_menu_setting_field($args = array())
     $value = get_option(FATHOM_SHOW_ANALYTICS_MENU_ITEM);
     echo sprintf('<input type="checkbox" name="%s" id="%s" class="regular-text" ' . (esc_attr($value) ? 'checked' : '') .' />', FATHOM_SHOW_ANALYTICS_MENU_ITEM, FATHOM_SHOW_ANALYTICS_MENU_ITEM);
     echo '<p class="description">' . __('Pro: Display the Fathom Tab in the sidebar (This is only available if you have enabled site sharing)', 'fathom-analytics') . '</p>';
+}
+
+/**
+ * Print the Ignore Canonical checkbox setting field.
+ *
+ * @param array $args Display arguments.
+ *
+ * @return void
+ *
+ * @since 3.2.5
+ */
+function fathom_print_ignore_canonical_setting_field($args = array())
+{
+    $value = get_option(FATHOM_IGNORE_CANONICAL);
+    echo sprintf('<input type="checkbox" name="%s" id="%s" class="regular-text" ' . (esc_attr($value) ? 'checked' : '') .' />', FATHOM_IGNORE_CANONICAL, FATHOM_IGNORE_CANONICAL);
+    echo '<p class="description">' . __('If there\'s a canonical link in place, we use it instead of the current URL. Check this to use the current URL instead', 'fathom-analytics') . '</p>';
 }
 
 /**

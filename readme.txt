@@ -2,8 +2,8 @@
 Contributors: convaventures
 Tags: analytics, google analytics, privacy, privacy friendly, stats, web analytics, website analytics
 Requires at least: 4.5
-Tested up to: 6.6
-Stable tag: 3.3.0
+Tested up to: 6.8.3
+Stable tag: 3.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.4
@@ -96,6 +96,10 @@ See our contact page for details: https://usefathom.com/contact
 2. The settings field on the general settings page.
 
 == Changelog ==
+
+### 3.3.1 - November 12, 2025
+
+Added the ability to ignore canonical links and tested on latest WordPress version
 
 ### 3.3.0 - September 5, 2024
 
