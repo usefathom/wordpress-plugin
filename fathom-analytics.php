@@ -116,7 +116,7 @@ function fathom_enqueue_js_snippet()
 function fathom_add_data_attributes_to_js_script( $tag, $handle, $src )
 {
     if ( 'fathom-snippet' === $handle ) {
-        $attributes = ' data-site="' . fathom_get_site_id() . '"  ' . exclude_fathom_script_from_cookiebot();
+        $attributes = ' data-site="' . esc_attr( fathom_get_site_id() ) . '"  ' . exclude_fathom_script_from_cookiebot();
 
         if ( get_option( FATHOM_IGNORE_CANONICAL ) ) {
             $attributes .= ' data-canonical="false"';
