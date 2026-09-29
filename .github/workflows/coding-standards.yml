@@ -1,0 +1,37 @@
+name: Coding Standards
+
+# When to run.
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - master
+
+jobs:
+  coding-standards:
+    name: Coding Standards / PHP ${{ matrix.php-versions }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: [ '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5' ]
+
+    steps:
+      - name: Checkout Plugin
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: none
+          tools: cs2pr
+
+      - name: Install Composer dependencies
+        run: composer update --no-interaction --no-progress
+
+      - name: Run PHP Coding Standards
+        run: vendor/bin/phpcs -q --standard=phpcs.xml --report=checkstyle ./ | cs2pr

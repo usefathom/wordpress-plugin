@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress Coding Standards for Fathom Analytics" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>WordPress Coding Standards for the Fathom Analytics WordPress Plugin</description>
+
+	<!-- Scan the current directory. -->
+	<file>.</file>
+
+	<!-- Exclude directories that should not be sniffed. -->
+	<exclude-pattern>/.github/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Exclude CSS and JS. -->
+	<exclude-pattern>*.js</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
+
+	<!-- Check that code meets WordPress standards. -->
+	<rule ref="WordPress">
+		<!-- Exclude some formatting rules. -->
+		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen" />
+		<exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose" />
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed" />
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
+
+		<exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeOpenBracket" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket" />
+
+		<exclude name="Squiz.Commenting.DocCommentAlignment.SpaceBeforeStar" />
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfter" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen" />
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingBeforeClose" />
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+		<exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
+		<exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
+		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound" />
+	</rule>
+
+	<!-- Add a few extra sniffs from other standards. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	<rule ref="Generic.Commenting.Todo"/>
+
+	<!-- Define minimum supported WordPress version for sniffs. -->
+	<config name="minimum_supported_wp_version" value="4.5"/>
+
+	<!-- Text domain should always be 'fathom-analytics'. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="fathom-analytics"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>
